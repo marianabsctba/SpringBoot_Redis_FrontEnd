@@ -1,15 +1,15 @@
 import React from 'react';
+import { List, ListItem, ListItemText } from '@mui/material';
 
 function StudentList({ students }) {
     return (
-        <div>
-            <h2>Student List</h2>
-            <ul>
-                {students.map((student) => (
-                    <li key={student.studentId}>{student.studentName}</li>
-                ))}
-            </ul>
-        </div>
+        <List>
+            {students.map((student) => (
+                <ListItem key={student.studentId}>
+                    <ListItemText primary={student.studentName} />
+                </ListItem>
+            ))}
+        </List>
     );
 }
 

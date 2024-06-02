@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Container, Typography, Grid, Paper } from '@mui/material';
 import StudentForm from './components/StudentForm';
 import StudentList from './components/StudentList';
 import CourseForm from './components/CourseForm';
@@ -26,13 +27,45 @@ function App() {
     }, []);
 
     return (
-        <div className="App">
-            <h1>Student Management System</h1>
-            <StudentForm onStudentAdded={fetchStudents} />
-            <StudentList students={students} />
-            <CourseForm onCourseAdded={fetchCourses} />
-            <CourseList courses={courses} />
-        </div>
+        <Container>
+            <Typography variant="h2" gutterBottom>
+                Student Management System
+            </Typography>
+            <Grid container spacing={3}>
+                <Grid item xs={12} md={6}>
+                    <Paper style={{ padding: 16 }}>
+                        <Typography variant="h4" gutterBottom>
+                            Add Student
+                        </Typography>
+                        <StudentForm onStudentAdded={fetchStudents} />
+                    </Paper>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <Paper style={{ padding: 16 }}>
+                        <Typography variant="h4" gutterBottom>
+                            Student List
+                        </Typography>
+                        <StudentList students={students} />
+                    </Paper>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <Paper style={{ padding: 16 }}>
+                        <Typography variant="h4" gutterBottom>
+                            Add Course
+                        </Typography>
+                        <CourseForm onCourseAdded={fetchCourses} />
+                    </Paper>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <Paper style={{ padding: 16 }}>
+                        <Typography variant="h4" gutterBottom>
+                            Course List
+                        </Typography>
+                        <CourseList courses={courses} />
+                    </Paper>
+                </Grid>
+            </Grid>
+        </Container>
     );
 }
 

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { TextField, Button } from '@mui/material';
 
 function CourseForm({ onCourseAdded }) {
     const [courseName, setCourseName] = useState('');
@@ -14,9 +15,8 @@ function CourseForm({ onCourseAdded }) {
         });
         if (response.ok) {
             setCourseName('');
-            alert('Course added successfully');
             if (onCourseAdded) {
-                onCourseAdded(); // Chama a função de callback
+                onCourseAdded();
             }
         } else {
             alert('Failed to add course');
@@ -25,13 +25,16 @@ function CourseForm({ onCourseAdded }) {
 
     return (
         <form onSubmit={handleSubmit}>
-            <input
-                type="text"
-                placeholder="Course Name"
+            <TextField
+                label="Course Name"
                 value={courseName}
                 onChange={(e) => setCourseName(e.target.value)}
+                fullWidth
+                margin="normal"
             />
-            <button type="submit">Add Course</button>
+            <Button type="submit" variant="contained" color="primary">
+                Add Course
+            </Button>
         </form>
     );
 }
