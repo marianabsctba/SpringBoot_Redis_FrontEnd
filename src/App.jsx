@@ -6,12 +6,16 @@ import CourseForm from './components/CourseForm';
 import CourseList from './components/CourseList';
 import StudentSearch from './components/StudentSearch';
 import CourseSearch from './components/CourseSearch';
+import StudyMaterialForm from './components/StudyMaterialForm';
+import StudyMaterialList from './components/StudyMaterialList';
 
 function App() {
     const [students, setStudents] = useState([]);
     const [courses, setCourses] = useState([]);
+    const [studyMaterials, setStudyMaterials] = useState([]);
     const [editingStudent, setEditingStudent] = useState(null);
     const [editingCourse, setEditingCourse] = useState(null);
+    const [editingStudyMaterial, setEditingStudyMaterial] = useState(null);
 
     const fetchStudents = async () => {
         const response = await fetch('/api/students');
@@ -23,6 +27,12 @@ function App() {
         const response = await fetch('/api/courses');
         const data = await response.json();
         setCourses(data);
+    };
+
+    const fetchStudyMaterials = async () => {
+        const response = await fetch('/api/materials');
+        const data = await response.json();
+        setStudyMaterials(data);
     };
 
     const handleDeleteStudent = async (studentId) => {
@@ -47,9 +57,26 @@ function App() {
         setEditingCourse(course);
     };
 
+    const handleDeleteStudyMaterial = async (materialId) => {
+        await fetch(`/api/materials/${materialId}`, {
+            method: 'DELETE',
+        });
+        fetchStudyMaterials();
+    };
+
+    const handleUpdateStudyMaterial = (material) => {
+        setEditingStudyMaterial(material);
+    };
+
+    const handleSaveStudyMaterial = () => {
+        fetchStudyMaterials();
+        setEditingStudyMaterial(null);
+    };
+
     useEffect(() => {
         fetchStudents();
         fetchCourses();
+        fetchStudyMaterials();
     }, []);
 
     return (
@@ -104,6 +131,22 @@ function App() {
                             Search Course by ID
                         </Typography>
                         <CourseSearch />
+                    </Paper>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <Paper style={{ padding: 16 }}>
+                        <Typography variant="h4" gutterBottom>
+                            {editingStudyMaterial ? 'Edit Study Material' : 'Add Study Material'}
+                        </Typography>
+                        <StudyMaterialForm onMaterialAdded={handleSaveStudyMaterial} material={editingStudyMaterial} />
+                    </Paper>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <Paper style={{ padding: 16 }}>
+                        <Typography variant="h4" gutterBottom>
+                            Study Material List
+                        </Typography>
+                        <StudyMaterialList materials={studyMaterials} onUpdate={handleUpdateStudyMaterial} onDelete={handleDeleteStudyMaterial} />
                     </Paper>
                 </Grid>
             </Grid>
