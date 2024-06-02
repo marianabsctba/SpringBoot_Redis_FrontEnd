@@ -4,6 +4,8 @@ import StudentForm from './components/StudentForm';
 import StudentList from './components/StudentList';
 import CourseForm from './components/CourseForm';
 import CourseList from './components/CourseList';
+import StudentSearch from './components/StudentSearch';
+import CourseSearch from './components/CourseSearch';
 
 function App() {
     const [students, setStudents] = useState([]);
@@ -86,6 +88,22 @@ function App() {
                             Course List
                         </Typography>
                         <CourseList courses={courses} onUpdate={handleUpdateCourse} onDelete={handleDeleteCourse} />
+                    </Paper>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <Paper style={{ padding: 16 }}>
+                        <Typography variant="h4" gutterBottom>
+                            Search Student by ID
+                        </Typography>
+                        <StudentSearch />
+                    </Paper>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <Paper style={{ padding: 16 }}>
+                        <Typography variant="h4" gutterBottom>
+                            Search Course by ID
+                        </Typography>
+                        <CourseSearch />
                     </Paper>
                 </Grid>
             </Grid>
