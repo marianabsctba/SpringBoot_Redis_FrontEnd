@@ -1,13 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TextField, Button } from '@mui/material';
 
-function CourseForm({ onCourseAdded }) {
+function CourseForm({ onCourseAdded, course }) {
     const [courseName, setCourseName] = useState('');
+
+    useEffect(() => {
+        if (course) {
+            setCourseName(course.courseName);
+        } else {
+            setCourseName('');
+        }
+    }, [course]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await fetch('/api/courses', {
-            method: 'POST',
+        const method = course ? 'PUT' : 'POST';
+        const url = course ? `/api/courses/${course.courseId}` : '/api/courses';
+        const response = await fetch(url, {
+            method,
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -19,7 +29,7 @@ function CourseForm({ onCourseAdded }) {
                 onCourseAdded();
             }
         } else {
-            alert('Failed to add course');
+            alert('Failed to save course');
         }
     };
 
@@ -33,7 +43,7 @@ function CourseForm({ onCourseAdded }) {
                 margin="normal"
             />
             <Button type="submit" variant="contained" color="primary">
-                Add Course
+                {course ? 'Update Course' : 'Add Course'}
             </Button>
         </form>
     );

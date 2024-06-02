@@ -1,13 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TextField, Button } from '@mui/material';
 
-function StudentForm({ onStudentAdded }) {
+function StudentForm({ onStudentAdded, student }) {
     const [studentName, setStudentName] = useState('');
+
+    useEffect(() => {
+        if (student) {
+            setStudentName(student.studentName);
+        } else {
+            setStudentName('');
+        }
+    }, [student]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await fetch('/api/students', {
-            method: 'POST',
+        const method = student ? 'PUT' : 'POST';
+        const url = student ? `/api/students/${student.studentId}` : '/api/students';
+        const response = await fetch(url, {
+            method,
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -19,7 +29,7 @@ function StudentForm({ onStudentAdded }) {
                 onStudentAdded();
             }
         } else {
-            alert('Failed to add student');
+            alert('Failed to save student');
         }
     };
 
@@ -33,7 +43,7 @@ function StudentForm({ onStudentAdded }) {
                 margin="normal"
             />
             <Button type="submit" variant="contained" color="primary">
-                Add Student
+                {student ? 'Update Student' : 'Add Student'}
             </Button>
         </form>
     );
